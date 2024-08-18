@@ -42,12 +42,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		}
 	case tea.WindowSizeMsg:
-		h, v := m.styles.Base.GetFrameSize()
-
 		m.width = msg.Width - 2
-		m.height = msg.Height - 2
+		m.height = msg.Height - 4
 
-		m.views.List.SetSize(msg.Width-h, msg.Height-v)
+		m.views.List.SetSize(m.width, m.height)
 	}
 
 	var cmd tea.Cmd
