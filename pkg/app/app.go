@@ -3,54 +3,13 @@ package app
 import (
 	"fmt"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
-	"golang.org/x/term"
+	"github.com/giovalgas/hosts/pkg/model"
 	"os"
 	"os/exec"
 )
 
-type Model struct{}
-
-func ApplicationModel() Model {
-	return Model{}
-}
-
-func (m Model) Init() tea.Cmd {
-	return nil
-}
-
-func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	switch msg := msg.(type) {
-	case tea.KeyMsg:
-		switch msg.String() {
-		case "ctrl+c", "q":
-			return m, tea.Quit
-		}
-	}
-
-	return m, nil
-}
-
-func (m Model) View() string {
-	width, height, _ := term.GetSize(int(os.Stdin.Fd()))
-
-	var style = lipgloss.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color("#FAFAFA")).
-		Background(lipgloss.Color("#7D56F4")).
-		PaddingTop(2).
-		PaddingLeft(4).
-		Width(width).
-		Height(height)
-
-	s := "Hello, World!"
-
-	s += "\nPress q or ctrl+c to quit.\n"
-	return style.Render(s)
-}
-
 func RunApp() {
-	_, err := tea.NewProgram(ApplicationModel()).Run()
+	_, err := tea.NewProgram(model.NewModel()).Run()
 
 	defer func() {
 		cmd := exec.Command("clear")
