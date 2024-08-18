@@ -26,10 +26,11 @@ func NewModel() *Model {
 	width, height, _ := getScreenSize()
 	lg := lipgloss.DefaultRenderer()
 	k := keys.NewKeys()
+	s := styles.NewStyles(lg)
 
 	return &Model{
-		styles: styles.NewStyles(lg),
-		views:  views.NewViews(width, height, k),
+		styles: s,
+		views:  views.NewViews(width, height, k, *s),
 		keys:   &k,
 		lg:     lg,
 		width:  width,

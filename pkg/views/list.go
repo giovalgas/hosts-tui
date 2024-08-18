@@ -5,14 +5,24 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/giovalgas/hosts/pkg/keys"
 	"github.com/giovalgas/hosts/pkg/reader"
+	"github.com/giovalgas/hosts/pkg/styles"
 	"time"
 )
 
-func NewHostsList(width int, height int, keys keys.Keys) *list.Model {
+func newDelegate(styles styles.Styles) *list.DefaultDelegate {
+	d := list.NewDefaultDelegate()
+
+	d.Styles.SelectedTitle = styles.SelectedItem
+	d.Styles.SelectedDesc = styles.SelectedItem
+
+	return &d
+}
+
+func NewHostsList(width int, height int, keys keys.Keys, styles styles.Styles) *list.Model {
 	// Get Hosts
 	items := reader.ReadHostsFile()
 
-	l := list.New(items, list.NewDefaultDelegate(), width, height)
+	l := list.New(items, newDelegate(styles), width, height)
 
 	l.AdditionalShortHelpKeys = func() []key.Binding {
 		return []key.Binding{keys.Copy}
