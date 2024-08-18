@@ -2,26 +2,21 @@ package styles
 
 import (
 	"github.com/charmbracelet/lipgloss"
-	"golang.org/x/term"
-	"os"
 )
+
+const MAUVE string = "#cba6f7"
 
 type Styles struct {
 	Base lipgloss.Style
 }
 
 func NewStyles(lg *lipgloss.Renderer) *Styles {
-	width, height, _ := term.GetSize(int(os.Stdin.Fd()))
 	s := Styles{}
 
 	s.Base = lg.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color("#FAFAFA")).
-		Background(lipgloss.Color("#7D56F4")).
-		PaddingTop(2).
-		PaddingLeft(4).
-		Width(width).
-		Height(height)
+		Padding(1, 2).
+		Border(lipgloss.RoundedBorder(), true).
+		BorderForeground(lipgloss.Color(MAUVE))
 
 	return &s
 }

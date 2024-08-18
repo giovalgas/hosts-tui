@@ -9,7 +9,7 @@ import (
 )
 
 func RunApp() {
-	_, err := tea.NewProgram(model.NewModel()).Run()
+	_, err := tea.NewProgram(model.NewModel(), tea.WithAltScreen()).Run()
 
 	defer func() {
 		cmd := exec.Command("clear")
