@@ -35,6 +35,13 @@
 * [Contact](#contact)
 * [Contributing](#contributing)
 ## About the Project
+<table>
+  <tr>
+    <td><img src="./assets/gif1.gif"></td>
+    <td><img src="./assets/gif2.gif"></td>
+  </tr>
+ </table>
+
 Simple terminal UI for managing /etc/hosts files!
 
 ### Built with:
