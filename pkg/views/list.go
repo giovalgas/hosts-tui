@@ -5,41 +5,44 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/giovalgas/hosts/pkg/keys"
+	"strings"
 )
 
-type item struct {
-	host, hostname, description string
+type Item struct {
+	host        string
+	hostname    []string
+	description string
 }
 
-func (i item) Title() string {
-	return i.hostname
+func (i Item) Title() string {
+	return strings.Join(i.hostname, " ")
 }
 
-func (i item) Description() string {
+func (i Item) Description() string {
 	return fmt.Sprintf("Host: %s, Description: %s", i.host, i.description)
 }
 
-func (i item) FilterValue() string {
-	return i.hostname + "," + i.host
+func (i Item) FilterValue() string {
+	return strings.Join(i.hostname, ",") + "," + i.host
 }
 
-func newItem(host string, hostname string, description string) item {
+func NewItem(host string, hostname []string, description string) Item {
 
 	if description == "" {
 		description = "No description provided..."
 	}
 
-	return item{host: host, hostname: hostname, description: description}
+	return Item{host: host, hostname: hostname, description: description}
 }
 
 func NewHostsList(width int, height int, keys keys.Keys) *list.Model {
 	// Get Hosts
 	items := []list.Item{
-		newItem("127.0.0.1", "localhost", "Port 5432"),
-		newItem("127.0.0.1", "secret", ""),
-		newItem("111.0.0.1", "vm", ""),
-		newItem("122.0.0.1", "test", ""),
-		newItem("133.0.0.1", "test-host", ""),
+		NewItem("127.0.0.1", []string{"localhost"}, "Port 5432"),
+		NewItem("127.0.0.1", []string{"secret", "testeeeeeee"}, ""),
+		NewItem("111.0.0.1", []string{"vm"}, ""),
+		NewItem("122.0.0.1", []string{"test"}, ""),
+		NewItem("133.0.0.1", []string{"test-host"}, ""),
 	}
 
 	l := list.New(items, list.NewDefaultDelegate(), width, height)
