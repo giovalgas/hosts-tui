@@ -1,4 +1,7 @@
 <!-- PROJECT SHIELDS -->
+[![Continuous Integration][cd-shield]][cd-url]
+[![Relase][release-shield]][release-url]
+
 
 <!-- PROJECT LOGO -->
 <br />
@@ -40,3 +43,7 @@ TODO
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[cd-shield]: https://github.com/giovalgas/hosts-tui/actions/workflows/continuous-deployment.yaml/badge.svg
+[cd-url]: https://github.com/giovalgas/hosts-tui/actions/workflows/continuous-deployment.yaml
+[release-shield]: https://img.shields.io/github/v/release/giovalgas/hosts-tui
+[release-url]: https://github.com/giovalgas/hosts-tui/releases/
