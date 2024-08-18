@@ -42,21 +42,23 @@ func (m Model) Init() tea.Cmd {
 }
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var cmds []tea.Cmd
+
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		if !m.views.List.FilteringEnabled() {
+		if m.views.List.FilterState() != 1 {
 			switch {
 			case msg.String() == "ctrl+c" || msg.String() == "q":
 				return m, tea.Quit
 			case key.Matches(msg, m.keys.Copy):
-
-				err := clipboard.WriteAll(strings.Split(m.views.List.SelectedItem().FilterValue(), ",")[0])
+				copiedItem := strings.Split(m.views.List.SelectedItem().FilterValue(), ",")[0]
+				err := clipboard.WriteAll(copiedItem)
 
 				if err != nil {
 					return m, tea.Quit
 				}
 
-				return m, nil
+				return m, m.views.List.NewStatusMessage(m.styles.StatusMessage.Render("Copied Item: " + copiedItem))
 			}
 		}
 	case tea.WindowSizeMsg:
@@ -68,7 +70,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	var cmd tea.Cmd
 	m.views.List, cmd = m.views.List.Update(msg)
-	return m, cmd
+	cmds = append(cmds, cmd)
+
+	return m, tea.Batch(cmds...)
 }
 
 func (m Model) View() string {
