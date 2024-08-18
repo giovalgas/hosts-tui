@@ -2,11 +2,13 @@ package views
 
 import (
 	"fmt"
+	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
+	"github.com/giovalgas/hosts/pkg/keys"
 )
 
 type item struct {
-	hostname, host, description string
+	host, hostname, description string
 }
 
 func (i item) Title() string {
@@ -18,10 +20,10 @@ func (i item) Description() string {
 }
 
 func (i item) FilterValue() string {
-	return i.hostname + i.host
+	return i.hostname + "," + i.host
 }
 
-func newItem(hostname string, host string, description string) item {
+func newItem(host string, hostname string, description string) item {
 
 	if description == "" {
 		description = "No description provided..."
@@ -30,7 +32,7 @@ func newItem(hostname string, host string, description string) item {
 	return item{host: host, hostname: hostname, description: description}
 }
 
-func NewHostsList(width int, height int) *list.Model {
+func NewHostsList(width int, height int, keys keys.Keys) *list.Model {
 	// Get Hosts
 	items := []list.Item{
 		newItem("127.0.0.1", "localhost", "Port 5432"),
@@ -41,6 +43,11 @@ func NewHostsList(width int, height int) *list.Model {
 	}
 
 	l := list.New(items, list.NewDefaultDelegate(), width, height)
+
+	l.AdditionalShortHelpKeys = func() []key.Binding {
+		return []key.Binding{keys.Copy}
+	}
+
 	l.Title = "Managing Hosts..."
 
 	l.SetWidth(width)

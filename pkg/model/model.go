@@ -1,18 +1,23 @@
 package model
 
 import (
+	"github.com/atotto/clipboard"
+	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/giovalgas/hosts/pkg/keys"
 	"github.com/giovalgas/hosts/pkg/styles"
 	"github.com/giovalgas/hosts/pkg/views"
 	"golang.org/x/term"
 	"os"
+	"strings"
 )
 
 type Model struct {
 	styles *styles.Styles
 	views  *views.Views
 	lg     *lipgloss.Renderer
+	keys   *keys.Keys
 	width  int
 	height int
 }
@@ -20,10 +25,12 @@ type Model struct {
 func NewModel() *Model {
 	width, height, _ := getScreenSize()
 	lg := lipgloss.DefaultRenderer()
+	k := keys.NewKeys()
 
 	return &Model{
 		styles: styles.NewStyles(lg),
-		views:  views.NewViews(width, height),
+		views:  views.NewViews(width, height, k),
+		keys:   &k,
 		lg:     lg,
 		width:  width,
 		height: height,
@@ -37,9 +44,18 @@ func (m Model) Init() tea.Cmd {
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		switch msg.String() {
-		case "ctrl+c", "q":
+		switch {
+		case msg.String() == "ctrl+c" || msg.String() == "q":
 			return m, tea.Quit
+		case key.Matches(msg, m.keys.Copy):
+
+			err := clipboard.WriteAll(strings.Split(m.views.List.SelectedItem().FilterValue(), ",")[0])
+
+			if err != nil {
+				return m, tea.Quit
+			}
+
+			return m, nil
 		}
 	case tea.WindowSizeMsg:
 		m.width = msg.Width - 2
