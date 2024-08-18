@@ -44,18 +44,20 @@ func (m Model) Init() tea.Cmd {
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		switch {
-		case msg.String() == "ctrl+c" || msg.String() == "q":
-			return m, tea.Quit
-		case key.Matches(msg, m.keys.Copy):
-
-			err := clipboard.WriteAll(strings.Split(m.views.List.SelectedItem().FilterValue(), ",")[0])
-
-			if err != nil {
+		if !m.views.List.FilteringEnabled() {
+			switch {
+			case msg.String() == "ctrl+c" || msg.String() == "q":
 				return m, tea.Quit
-			}
+			case key.Matches(msg, m.keys.Copy):
 
-			return m, nil
+				err := clipboard.WriteAll(strings.Split(m.views.List.SelectedItem().FilterValue(), ",")[0])
+
+				if err != nil {
+					return m, tea.Quit
+				}
+
+				return m, nil
+			}
 		}
 	case tea.WindowSizeMsg:
 		m.width = msg.Width - 2
