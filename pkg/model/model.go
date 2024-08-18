@@ -55,7 +55,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				err := clipboard.WriteAll(copiedItem)
 
 				if err != nil {
-					return m, tea.Quit
+					return m, m.views.List.
+						NewStatusMessage(m.styles.ErrorStatusMessage.Render("An error ocurred while copying item: " + err.Error()))
 				}
 
 				return m, m.views.List.NewStatusMessage(m.styles.StatusMessage.Render("Copied Item: " + copiedItem))
