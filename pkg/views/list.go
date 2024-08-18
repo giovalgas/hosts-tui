@@ -1,24 +1,43 @@
 package views
 
 import (
+	"fmt"
 	"github.com/charmbracelet/bubbles/list"
 )
 
 type item struct {
-	title, desc string
+	hostname, host, description string
 }
 
-func (i item) Title() string       { return i.title }
-func (i item) Description() string { return i.desc }
-func (i item) FilterValue() string { return i.title }
+func (i item) Title() string {
+	return i.hostname
+}
+
+func (i item) Description() string {
+	return fmt.Sprintf("Host: %s, Description: %s", i.host, i.description)
+}
+
+func (i item) FilterValue() string {
+	return i.hostname + i.host
+}
+
+func newItem(hostname string, host string, description string) item {
+
+	if description == "" {
+		description = "No description provided..."
+	}
+
+	return item{host: host, hostname: hostname, description: description}
+}
 
 func NewHostsList(width int, height int) *list.Model {
 	// Get Hosts
 	items := []list.Item{
-		item{desc: "127.0.0.1", title: "localhost"},
-		item{desc: "127.0.0.1", title: "test-host"},
-		item{desc: "172.0.0.1", title: "ssh-machine-host"},
-		item{desc: "172.0.0.1", title: "super-host"},
+		newItem("127.0.0.1", "localhost", "Port 5432"),
+		newItem("127.0.0.1", "secret", ""),
+		newItem("111.0.0.1", "vm", ""),
+		newItem("122.0.0.1", "test", ""),
+		newItem("133.0.0.1", "test-host", ""),
 	}
 
 	l := list.New(items, list.NewDefaultDelegate(), width, height)
