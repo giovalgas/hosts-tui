@@ -53,6 +53,11 @@ func ReadHostsFile() []list.Item {
 	for fileScanner.Scan() {
 		line := fileScanner.Text()
 
+		// Ignore empty lines
+		if line == "" {
+			continue
+		}
+
 		// Ignore lines that either start with "#" or "-e"
 		if strings.HasPrefix(line, "#") || strings.HasPrefix(line, "-e") {
 			continue
@@ -70,6 +75,7 @@ func ReadHostsFile() []list.Item {
 		host := hosts[0]
 		hostnames := hosts[1:]
 
+		// Append to items slice
 		items = append(items, NewItem(host, hostnames, strings.Join(splitLine[1:], ", ")))
 	}
 
