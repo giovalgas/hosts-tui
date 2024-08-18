@@ -15,10 +15,10 @@ func (i item) FilterValue() string { return i.title }
 func NewHostsList(width int, height int) *list.Model {
 	// Get Hosts
 	items := []list.Item{
-		item{title: "Hello", desc: "World1"},
-		item{title: "Hello", desc: "World2"},
-		item{title: "Hello", desc: "World3"},
-		item{title: "Hello", desc: "World4"},
+		item{desc: "127.0.0.1", title: "localhost"},
+		item{desc: "127.0.0.1", title: "test-host"},
+		item{desc: "172.0.0.1", title: "ssh-machine-host"},
+		item{desc: "172.0.0.1", title: "super-host"},
 	}
 
 	l := list.New(items, list.NewDefaultDelegate(), width, height)
