@@ -5,6 +5,7 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/giovalgas/hosts/pkg/keys"
 	"github.com/giovalgas/hosts/pkg/reader"
+	"time"
 )
 
 func NewHostsList(width int, height int, keys keys.Keys) *list.Model {
@@ -19,6 +20,7 @@ func NewHostsList(width int, height int, keys keys.Keys) *list.Model {
 
 	l.Title = "Managing Hosts..."
 
+	l.StatusMessageLifetime = 5 * time.Second
 	l.SetWidth(width)
 	l.SetHeight(height)
 
